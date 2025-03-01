@@ -1,0 +1,22 @@
+{
+  "name": "playwrightcucumberjavascript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "node src/helper/init.js",
+    "test": "cross-env ENV=staging cucumber-js --config=config/cucumber.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.2.0",
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.7",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "fs-extra": "^11.3.0",
+    "winston": "^3.17.0"
+  }
+}
