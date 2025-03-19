@@ -15,9 +15,10 @@ module.exports = {
         ],
         format: [
             "html:test-results/cucumber-report.html",
-            "json:test-results/cucumber-report.json"
+            "json:test-results/cucumber-report.json",
+            "junit:reports/junit-report.xml"
         ],
         parallel: 2,
-        retry: 1
+        retry: 0
     }
 }
