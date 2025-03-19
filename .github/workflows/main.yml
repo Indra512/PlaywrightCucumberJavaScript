@@ -34,25 +34,31 @@ jobs:
       # uses: mikepenz/action-junit-report@v3
       # with:
         # report_paths: 'reports/junit-report.xml'
-    - name: Debug Cucumber JSON Report
-      run: cat test-results/cucumber-report.json
-    - name: Add Test Case-wise Summary to GitHub Actions
-      if: always()
-      run: |
-        echo "### 📝 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
-        echo "| Status  | Test Case | Feature |" >> $GITHUB_STEP_SUMMARY
-        echo "|---------|----------|---------|" >> $GITHUB_STEP_SUMMARY
-        cat test-results/cucumber-report.json | jq -r '
-          .[] | 
-          {feature: .name, scenarios: .elements} | 
-          .scenarios[] | 
-          {scenario: .name, status: ([.steps[].result.status] | unique | join(",")), feature: input.feature} | 
-          if .status == "passed" then 
-            "| ✅ Pass | \(.scenario) | \(.feature) |"
-          elif .status == "failed" then 
-            "| ❌ Fail | \(.scenario) | \(.feature) |"
-          else empty 
-        end' >> $GITHUB_STEP_SUMMARY
+    # - name: Debug Cucumber JSON Report
+    #   run: cat test-results/cucumber-report.json
+    # - name: Add Test Case-wise Summary to GitHub Actions
+    #   if: always()
+    #   run: |
+    #     echo "### 📝 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+    #     echo "| Status  | Test Case | Feature |" >> $GITHUB_STEP_SUMMARY
+    #     echo "|---------|----------|---------|" >> $GITHUB_STEP_SUMMARY
+    #     cat test-results/cucumber-report.json | jq -r '
+    #       .[] | 
+    #       {feature: .name, scenarios: .elements} | 
+    #       .scenarios[] | 
+    #       {scenario: .name, status: ([.steps[].result.status] | unique | join(",")), feature: input.feature} | 
+    #       if .status == "passed" then 
+    #         "| ✅ Pass | \(.scenario) | \(.feature) |"
+    #       elif .status == "failed" then 
+    #         "| ❌ Fail | \(.scenario) | \(.feature) |"
+    #       else empty 
+    #     end' >> $GITHUB_STEP_SUMMARY
+    - name: Publish Test Report
+      uses: dorny/test-reporter@v1
+      with:
+        name: Cucumber Report
+        path: reports/junit-report.xml
+        reporter: java-junit
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
