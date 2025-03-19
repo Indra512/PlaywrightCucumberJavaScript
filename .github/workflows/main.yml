@@ -40,14 +40,19 @@ jobs:
         echo "### 📝 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
         echo "| Status  | Test Case | Feature |" >> $GITHUB_STEP_SUMMARY
         echo "|---------|----------|---------|" >> $GITHUB_STEP_SUMMARY
-        cat test-results/cucumber-report.json | jq -r '.[] | 
-        .elements[] | 
-        select(.steps[].result.status=="passed") | 
-        "| ✅ Pass | \(.name) | \(.uri | split("/") | last | sub(".feature"; "")) |"' >> $GITHUB_STEP_SUMMARY
-        cat test-results/cucumber-report.json | jq -r '.[] | 
-        .elements[] | 
-        select(.steps[].result.status=="failed") | 
-        "| ❌ Fail | \(.name) | \(.uri | split("/") | last | sub(".feature"; "")) |"' >> $GITHUB_STEP_SUMMARY
+        cat reports/cucumber-report.json | jq -r '
+          .[] | 
+          .elements[] | 
+          {name: .name, status: (.steps[].result.status), feature: (.uri // "unknown")} | 
+          select(.status == "passed") | 
+          "| ✅ Pass | \(.name) | \(.feature | split("/") | last | sub(".feature$"; "")) |"' >> $GITHUB_STEP_SUMMARY
+        cat reports/cucumber-report.json | jq -r '
+          .[] | 
+          .elements[] | 
+          {name: .name, status: (.steps[].result.status), feature: (.uri // "unknown")} | 
+          select(.status == "failed") | 
+          "| ❌ Fail | \(.name) | \(.feature | split("/") | last | sub(".feature$"; "")) |"' >> $GITHUB_STEP_SUMMARY
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
