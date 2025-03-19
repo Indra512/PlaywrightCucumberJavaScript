@@ -39,8 +39,8 @@ jobs:
         echo "### 📝 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
         echo "| Status  | Test Case | Feature |" >> $GITHUB_STEP_SUMMARY
         echo "|---------|-----------|---------|" >> $GITHUB_STEP_SUMMARY
-        cat reports/cucumber-report.json | jq -r '.[] | .elements[] | "| ✅ Pass | \(.name) | \(.keyword) |"' >> $GITHUB_STEP_SUMMARY
-        cat reports/cucumber-report.json | jq -r '.[] | .elements[] | select(.steps[].result.status=="failed") | "| ❌ Fail | \(.name) | \(.keyword) |"' >> $GITHUB_STEP_SUMMARY
+        cat test-results/cucumber-report.json | jq -r '.[] | .elements[] | "| ✅ Pass | \(.name) | \(.keyword) |"' >> $GITHUB_STEP_SUMMARY
+        cat test-results/cucumber-report.json | jq -r '.[] | .elements[] | select(.steps[].result.status=="failed") | "| ❌ Fail | \(.name) | \(.keyword) |"' >> $GITHUB_STEP_SUMMARY
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
