@@ -54,6 +54,7 @@ jobs:
     #       else empty 
     #     end' >> $GITHUB_STEP_SUMMARY
     - name: Publish Test Report
+      if: always()
       uses: dorny/test-reporter@v1
       with:
         name: Cucumber Report
