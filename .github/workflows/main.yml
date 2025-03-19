@@ -40,13 +40,13 @@ jobs:
         echo "### 📝 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
         echo "| Status  | Test Case | Feature |" >> $GITHUB_STEP_SUMMARY
         echo "|---------|----------|---------|" >> $GITHUB_STEP_SUMMARY
-        cat reports/cucumber-report.json | jq -r '
+        cat test-results/cucumber-report.json | jq -r '
           .[] | 
           .elements[] | 
           {name: .name, status: (.steps[].result.status), feature: (.uri // "unknown")} | 
           select(.status == "passed") | 
           "| ✅ Pass | \(.name) | \(.feature | split("/") | last | sub(".feature$"; "")) |"' >> $GITHUB_STEP_SUMMARY
-        cat reports/cucumber-report.json | jq -r '
+        cat test-results/cucumber-report.json | jq -r '
           .[] | 
           .elements[] | 
           {name: .name, status: (.steps[].result.status), feature: (.uri // "unknown")} | 
