@@ -18,9 +18,9 @@ jobs:
       with:
         node-version: lts/*
     - name: Install jq (Windows)
-      if: runner.os == 'Windows'
+      if: runner.os != 'Windows'
       run: |
-        choco install jq
+        sudo apt-get update && sudo apt-get install -y jq
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
