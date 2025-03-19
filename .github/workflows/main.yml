@@ -42,19 +42,15 @@ jobs:
         echo "|---------|----------|---------|" >> $GITHUB_STEP_SUMMARY
         cat test-results/cucumber-report.json | jq -r '
           .[] | 
-          {feature: .name, scenarios: .elements[]} |
-          .scenarios | 
+          {feature: .name, scenarios: .elements} | 
+          .scenarios[] | 
           {scenario: .name, status: ([.steps[].result.status] | unique | join(",")), feature: input.feature} | 
-          select(.status | contains("passed")) | 
-          "| ✅ Pass | \(.scenario) | \(.feature) |"' >> $GITHUB_STEP_SUMMARY
-        cat test-results/cucumber-report.json | jq -r '
-          .[] | 
-          {feature: .name, scenarios: .elements[]} |
-          .scenarios | 
-          {scenario: .name, status: ([.steps[].result.status] | unique | join(",")), feature: input.feature} | 
-          select(.status | contains("failed")) | 
-          "| ❌ Fail | \(.scenario) | \(.feature) |"' >> $GITHUB_STEP_SUMMARY
-
+          if .status == "passed" then 
+            "| ✅ Pass | \(.scenario) | \(.feature) |"
+          elif .status == "failed" then 
+            "| ❌ Fail | \(.scenario) | \(.feature) |"
+          else empty 
+        end' >> $GITHUB_STEP_SUMMARY
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
