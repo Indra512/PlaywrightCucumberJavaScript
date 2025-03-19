@@ -35,6 +35,7 @@ jobs:
       with:
         report_paths: 'reports/junit-report.xml'
     - name: Add Test Summary to GitHub Actions
+      if: always()
       run: |
         echo "### Test Execution Summary" >> $GITHUB_STEP_SUMMARY
         echo "| Status | Test Name |" >> $GITHUB_STEP_SUMMARY
