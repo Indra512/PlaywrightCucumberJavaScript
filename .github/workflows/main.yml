@@ -74,3 +74,14 @@ jobs:
         name: test-results
         path: test-results/
         retention-days: 2
+
+    - name: Report Status to Build Repo
+      if: always()
+      run: |
+          conclusion=${{ job.status }}
+          echo "Reporting automation status to build repository..."
+          curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
+               -H "Authorization: Bearer ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+               -H "Content-Type: application/json" \
+               --data "{\"event_type\": \"automation-${conclusion}\"}" \
+               https://api.github.com/repos/Indra512/Test/dispatches
