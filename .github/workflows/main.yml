@@ -58,6 +58,9 @@ jobs:
         name: Cucumber Report
         path: reports/junit-report.xml
         reporter: jest-junit
+
+    - name: Publish Test Summary Results
+      run: npx github-actions-ctrf test-results/cucumber-report.json
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
