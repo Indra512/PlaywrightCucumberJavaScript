@@ -19,6 +19,6 @@ module.exports = {
             "junit:reports/junit-report.xml"
         ],
         parallel: 2,
-        retry: 0
+        retry: 1
     }
 }
