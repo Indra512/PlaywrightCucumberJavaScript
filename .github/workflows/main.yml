@@ -57,7 +57,7 @@ jobs:
       with:
         name: Cucumber Report
         path: reports/junit-report.xml
-        reporter: java-junit
+        reporter: jest-junit
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
