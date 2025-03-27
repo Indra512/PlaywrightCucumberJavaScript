@@ -60,6 +60,7 @@ jobs:
         reporter: java-junit
 
     - name: Publish Test Summary Results
+      if: always()
       run: npx github-actions-ctrf test-results/cucumber-report.json
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
