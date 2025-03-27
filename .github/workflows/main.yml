@@ -62,11 +62,11 @@ jobs:
     # - name: Publish Test Summary Results
       # if: always()
       # run: npx github-actions-ctrf test-results/cucumber-report.json
-    - name: Publish Test Report
-      if: always()
-      uses: ctrf-io/github-test-reporter@v1
-      with:
-        report-path: 'test-results/cucumber-report.json'
+    # - name: Publish Test Report
+    #   if: always()
+    #   uses: ctrf-io/github-test-reporter@v1
+    #   with:
+    #     report-path: 'test-results/cucumber-report.json'
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
@@ -75,10 +75,10 @@ jobs:
         path: test-results/
         retention-days: 2
 
-    # - name: Mark Workflow as Success
-    #   if: success()
-    #   run: echo "Automation completed successfully!"
+    - name: Mark Workflow as Success
+      if: success()
+      run: echo "Automation completed successfully!"
 
-    # - name: Mark Workflow as Failure
-    #   if: failure()
-    #   run: echo "Automation failed!"
+    - name: Mark Workflow as Failure
+      if: failure()
+      run: echo "Automation failed!"
