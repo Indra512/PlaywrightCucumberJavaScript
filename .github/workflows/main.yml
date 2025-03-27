@@ -57,7 +57,7 @@ jobs:
       with:
         name: Cucumber Report
         path: reports/junit-report.xml
-        reporter: jest-junit
+        reporter: java-junit
 
     - name: Publish Test Summary Results
       run: npx github-actions-ctrf test-results/cucumber-report.json
